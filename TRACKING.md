@@ -20,7 +20,8 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | ID | Title | Status | Priority | Notes |
 | --- | --- | --- | --- | --- |
 | BUG-01 | Position jumps to the end when SMTC has no timeline | todo | P2 | Found by reading the code. Store Spotify fills in the timeline, so not seen yet. See Details |
-| TASK-09 | Build and test the installer | todo | P2 | `npm run tauri build`, then install and run the NSIS build |
+| TASK-09 | Build and test the installer | doing | P2 | `npm run tauri build`, then install and run the NSIS build |
+| TASK-15 | Add renders of the overlay to the README | doing | P2 | Rendered from the real frontend with a mocked Tauri API and made-up lyrics |
 | TASK-10 | Opt-in debug logging | todo | P2 | Only errors are logged now. Log the detected track, the raw SMTC timeline and which LRCLIB step matched |
 | TASK-11 | Replace the default Tauri icons | todo | P2 | The tray and the installer show the Tauri logo |
 | FEAT-10 | Show unsynced lyrics | todo | P2 | Today it says "Only unsynced lyrics exist for this song". Could show the plain text, scrolled by song progress |

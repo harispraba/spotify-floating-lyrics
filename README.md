@@ -2,6 +2,10 @@
 
 A small always-on-top, see-through window that shows time-synced lyrics for whatever the Spotify desktop app is playing. The current line fills in as it's sung. Built with [Tauri 2](https://tauri.app) (Rust + TypeScript), so one codebase runs on Windows, macOS and Linux.
 
+![The lyrics overlay floating across a notes window and the desktop, with the current line half filled in amber](docs/overlay.png)
+
+<sub>Rendered from the app's own frontend, with made-up sample lyrics.</sub>
+
 - **No Spotify login or API key.** Playback is read from the OS media integration on the same machine.
 - **Lyrics from [LRCLIB](https://lrclib.net)**, a free, open database of synced lyrics.
 - **Click-through lock** so the lyrics never block what's underneath.
@@ -53,6 +57,8 @@ src/
 To produce an installer, run `npm run tauri build`. The installers land in `src-tauri/target/release/bundle/` (`nsis/*.exe` and `msi/*.msi`).
 
 ## Using it
+
+![Hovering over the overlay shows the track name, the toolbar and the resize grip](docs/toolbar.png)
 
 - **Move:** drag anywhere on the lyrics. **Resize:** drag the grip in the bottom-right corner. Position and size are remembered.
 - **Hover** (while unlocked) to show the track name and the toolbar:
