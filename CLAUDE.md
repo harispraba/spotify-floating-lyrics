@@ -65,6 +65,7 @@ A window API called from the frontend needs a permission in `src-tauri/capabilit
 - Never build or run inside WSL. A WSL build is a Linux app and can't see the Windows Spotify app.
 - In the `windows` 0.62 crate, you block on WinRT async with `.join()`. It used to be `.get()`.
 - Spotify on Windows only refreshes its reported position on play, pause and seek, so `smtc.rs` extrapolates from `LastUpdatedTime`. Suspect this first if lyrics drift.
+- On quit, WebView2 logs `Failed to unregister class Chrome_WidgetWin_0. Error = 1412`. It's harmless.
 - Release builds have no console (`windows_subsystem = "windows"`), so logs only appear under `npm run tauri dev`. For webview devtools, right-click → Inspect in a dev build (the context menu is disabled in release builds).
 - `npm run tauri dev` fails with "Port 1420 is already in use" when an earlier dev server is still running. Stop it first.
 - Lock mode makes the window ignore the mouse, and it persists across restarts. Unlock with Ctrl+Alt+Shift+L or the tray menu.

@@ -19,14 +19,13 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 
 | ID | Title | Status | Priority | Notes |
 | --- | --- | --- | --- | --- |
-| TASK-07 | Check the window on a real desktop | doing | P1 | Transparent, on top, off the taskbar, readable on white and dark. Left: Alt+Tab, restart, focus |
 | TASK-08 | Check the lock and the tray menu | todo | P1 | See Details |
 | BUG-01 | Position jumps to the end when SMTC has no timeline | todo | P2 | Found by reading the code. Store Spotify fills in the timeline, so not seen yet. See Details |
 | TASK-09 | Build and test the installer | todo | P2 | `npm run tauri build`, then install and run the NSIS build |
 | TASK-10 | Opt-in debug logging | todo | P2 | Only errors are logged now. Log the detected track, the raw SMTC timeline and which LRCLIB step matched |
 | TASK-11 | Replace the default Tauri icons | todo | P2 | The tray and the installer show the Tauri logo |
 | FEAT-10 | Show unsynced lyrics | todo | P2 | Today it says "Only unsynced lyrics exist for this song". Could show the plain text, scrolled by song progress |
-| FEAT-11 | Overlay never takes keyboard focus | todo | P2 | First check whether it does (TASK-07) |
+| FEAT-11 | Overlay never takes keyboard focus | todo | P2 | Nothing stops it: no `WS_EX_NOACTIVATE`, and Tauri's `focus` defaults on. See Details |
 | FEAT-12 | Retry failed lookups automatically | todo | P3 | A locked overlay can't reach the reload button, so a network blip sticks until the next song |
 | FEAT-13 | Remember the timing offset per song | todo | P3 | Timing varies per LRCLIB entry, so one global offset doesn't fit every song |
 | FEAT-14 | Colour and theme settings | todo | P3 | Colours are already custom properties at the top of `styles.css` |
@@ -55,6 +54,7 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | TASK-04 | First Windows build: install, test, lint, launch | 2026-10-20 | Rust 1.99.1, VS 2022 Build Tools, Node 23.1 through fnm. 12/12 tests, clippy and fmt clean, window shows |
 | TASK-05 | Check Spotify detection on Windows | 2026-10-20 | Store version 1.305.3058. Right title and artist on hover; synced lyrics load and advance |
 | TASK-06 | Check lyric sync over a whole song | 2026-10-20 | Checked by the user with the Store app: on time through a whole song, pause, seek and skip |
+| TASK-07 | Check the window on a real desktop | 2026-10-20 | All items pass, including Alt+Tab and an exact position restore. Focus at launch is under FEAT-11 |
 
 ## Dropped
 
@@ -90,6 +90,10 @@ If the lyrics gradually run ahead or fall behind over a song, the extrapolation 
 - Ctrl+Alt+Shift+L toggles the lock, and the tray's "Lock (click-through)" check mark follows it.
 - After restarting while locked, the app starts locked.
 - The tray's "Show lyrics" hides and shows the window. The toolbar's × hides it and clears that check mark. Quit exits.
+
+### FEAT-11 Overlay never takes keyboard focus
+
+Checked in TASK-07. The window's extended style is `0x40118` (`TOPMOST`, `APPWINDOW`), with no `WS_EX_NOACTIVATE`, and `tauri.conf.json` leaves `focus` at its default of on. When it was launched from a background shell, it didn't take focus from the app in front, but Windows' foreground lock may be what stopped it there. Still to check: whether it takes focus when the user launches it, and whether clicking or dragging it takes focus from the app underneath.
 
 ### BUG-01 Position jumps to the end when SMTC has no timeline
 
