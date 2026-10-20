@@ -19,8 +19,7 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 
 | ID | Title | Status | Priority | Notes |
 | --- | --- | --- | --- | --- |
-| TASK-04 | First Windows build: install, test, lint, launch | blocked | P1 | Rust and the C++ Build Tools aren't installed yet. Then expect 12 passing tests and no clippy warnings |
-| TASK-05 | Check Spotify detection on Windows | todo | P1 | Hovering shows the right title and artist. Note whether Spotify is the installer or the Store version |
+| TASK-05 | Check Spotify detection on Windows | todo | P1 | Hovering shows the right title and artist. Spotify here is the Store version (1.305.3058) |
 | TASK-06 | Check lyric sync over a whole song | todo | P1 | See Details |
 | TASK-07 | Check the window on a real desktop | todo | P1 | See Details |
 | TASK-08 | Check the lock and the tray menu | todo | P1 | See Details |
@@ -55,6 +54,7 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | TASK-01 | README | 2026-10-20 | Setup, usage, known limits |
 | TASK-02 | Handover docs and this tracker | 2026-10-20 | CLAUDE.md, HANDOVER.md, TRACKING.md |
 | TASK-03 | Move the project to Windows and make the initial commit | 2026-10-20 | Copy matches the WSL tree. Committed before the first build, so Windows fixes show up as their own diffs |
+| TASK-04 | First Windows build: install, test, lint, launch | 2026-10-20 | Rust 1.99.1, VS 2022 Build Tools, Node 23.1 through fnm. 12/12 tests, clippy and fmt clean, window shows |
 
 ## Dropped
 

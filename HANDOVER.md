@@ -5,8 +5,8 @@ Written 2026-10-20 at the end of the first build session. The app was written an
 ## Where things stand
 
 - **v0.1.0 has every feature planned for a first try:** the overlay, Spotify detection on all three OSes, LRCLIB lookup, click-through lock, hover toolbar and tray menu. The full list is FEAT-01 to FEAT-09 in TRACKING.md.
-- **The project is on Windows and committed** (TASK-03). `C:\dev\spotify-floating-lyrics` is the real copy now.
-- **Next job:** get it running on Windows and check the behaviour that couldn't be checked from WSL (TASK-04 to TASK-08).
+- **The project is on Windows and committed** (TASK-03), and it builds, passes its checks and runs there (TASK-04). `C:\dev\spotify-floating-lyrics` is the real copy now.
+- **Next job:** check the behaviour that couldn't be checked from WSL (TASK-05 to TASK-08).
 
 ## 1. Move the project to Windows
 
@@ -52,10 +52,10 @@ Do these in order:
 | LRCLIB lookups | Live requests | Synced lyrics found for "Get Lucky" and "Bohemian Rhapsody - Remastered 2011" |
 | macOS playback reader | Clippy for `aarch64-apple-darwin`, backend code only | Clean |
 | Frontend | `npm run build`, plus headless Chromium screenshots with a mocked Tauri API | Builds; readable over light and dark backgrounds |
+| Windows build | `npm run build`, `cargo test`, clippy and fmt on Windows, then `npm run tauri dev` | All clean, 12/12 tests pass, the window shows |
 
 Not done yet:
 
-- Linking or running anything on Windows
 - Reading a real Spotify session through SMTC
 - Transparency, always-on-top and click-through on a real desktop
 - Building the installer

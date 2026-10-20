@@ -61,6 +61,7 @@ A window API called from the frontend needs a permission in `src-tauri/capabilit
 ## Gotchas
 
 - Vite 8 needs Node 20.19+ or 22.12+. If `npm install` crashes with `Cannot read properties of null (reading 'edgesOut')`, run `npx -y npm@11 install`.
+- `package-lock.json` was written by npm 11. npm 10 strips its `libc` fields on install, which is churn, not a real change. Don't commit it; `git checkout package-lock.json` undoes it.
 - Never build or run inside WSL. A WSL build is a Linux app and can't see the Windows Spotify app.
 - In the `windows` 0.62 crate, you block on WinRT async with `.join()`. It used to be `.get()`.
 - Spotify on Windows only refreshes its reported position on play, pause and seek, so `smtc.rs` extrapolates from `LastUpdatedTime`. Suspect this first if lyrics drift.
