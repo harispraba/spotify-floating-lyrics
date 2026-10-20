@@ -20,7 +20,6 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | ID | Title | Status | Priority | Notes |
 | --- | --- | --- | --- | --- |
 | BUG-01 | Position jumps to the end when SMTC has no timeline | todo | P2 | Found by reading the code. Store Spotify fills in the timeline, so not seen yet. See Details |
-| TASK-14 | Publish the repo on GitHub | doing | P2 | Public at harispraba/spotify-floating-lyrics. MIT license, noreply commit email, HANDOVER.md folded into the README |
 | TASK-09 | Build and test the installer | todo | P2 | `npm run tauri build`, then install and run the NSIS build |
 | TASK-10 | Opt-in debug logging | todo | P2 | Only errors are logged now. Log the detected track, the raw SMTC timeline and which LRCLIB step matched |
 | TASK-11 | Replace the default Tauri icons | todo | P2 | The tray and the installer show the Tauri logo |
@@ -55,6 +54,7 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | TASK-06 | Check lyric sync over a whole song | 2026-10-20 | Checked by the user with the Store app: on time through a whole song, pause, seek and skip |
 | TASK-07 | Check the window on a real desktop | 2026-10-20 | All items pass, including Alt+Tab and an exact position restore. Focus at launch is under FEAT-11 |
 | TASK-08 | Check the lock and the tray menu | 2026-10-20 | All items pass. Starting locked was also confirmed from the window's click-through style |
+| TASK-14 | Publish the repo on GitHub | 2026-10-20 | Public at harispraba/spotify-floating-lyrics. MIT license, commits rewritten to the noreply email, HANDOVER.md folded into the README |
 | BUG-02 | A wrapped current line fills on every row at once | 2026-10-20 | The gradient moved to an inline span, so it runs through the rows in reading order. Checked by the user |
 | FEAT-12 | Retry failed lookups automatically | 2026-10-20 | After 3, 10 and 30 s, then every minute, while the song plays. Failures are now logged. See Details |
 
