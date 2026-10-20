@@ -81,6 +81,7 @@ const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as 
 const stage = $("stage");
 const prevEl = $("prev");
 const currentEl = $("current");
+const currentText = $("current-text");
 const nextEl = $("next");
 const nowTitle = $("now-title");
 const nowArtist = $("now-artist");
@@ -173,7 +174,7 @@ function render() {
     view.next !== shown.next
   ) {
     prevEl.textContent = view.prev;
-    currentEl.textContent = view.current;
+    currentText.textContent = view.current;
     nextEl.textContent = view.next;
     currentEl.classList.toggle("status", view.index === -1);
     if (view.index >= 0 && view.index !== shown.index) {

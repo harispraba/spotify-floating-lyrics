@@ -194,16 +194,24 @@ body:not(.locked) .stage:hover .bar,
 .line.current {
   font-weight: 720;
   letter-spacing: -0.01em;
+  filter: drop-shadow(0 0 1.5px var(--halo)) drop-shadow(0 2px 6px rgb(16 11 6 / 0.55));
+}
+
+/* On an inline span the gradient runs through wrapped rows in reading order
+   (box-decoration-break: slice); on the block it would fill every row at once. */
+.line.current > span {
   color: transparent;
   background: linear-gradient(90deg, var(--sung) var(--fill, 0%), var(--unsung) var(--fill, 0%));
   -webkit-background-clip: text;
   background-clip: text;
-  filter: drop-shadow(0 0 1.5px var(--halo)) drop-shadow(0 2px 6px rgb(16 11 6 / 0.55));
 }
 
 .line.current.status {
   font-size: 0.62em;
   font-weight: 600;
+}
+
+.line.current.status > span {
   color: var(--ink);
   background: none;
 }
