@@ -20,6 +20,7 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | ID | Title | Status | Priority | Notes |
 | --- | --- | --- | --- | --- |
 | BUG-01 | Position jumps to the end when SMTC has no timeline | todo | P2 | Found by reading the code. Store Spotify fills in the timeline, so not seen yet. See Details |
+| TASK-14 | Publish the repo on GitHub | doing | P2 | Public at harispraba/spotify-floating-lyrics. MIT license, noreply commit email, HANDOVER.md folded into the README |
 | TASK-09 | Build and test the installer | todo | P2 | `npm run tauri build`, then install and run the NSIS build |
 | TASK-10 | Opt-in debug logging | todo | P2 | Only errors are logged now. Log the detected track, the raw SMTC timeline and which LRCLIB step matched |
 | TASK-11 | Replace the default Tauri icons | todo | P2 | The tray and the installer show the Tauri logo |

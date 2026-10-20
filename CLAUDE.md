@@ -2,9 +2,9 @@
 
 A Tauri 2 desktop app: a transparent, always-on-top window that shows time-synced lyrics for whatever the Spotify desktop app is playing. The backend is Rust (`src-tauri/`) and the frontend is vanilla TypeScript with Vite (`src/`). Windows comes first; Linux and macOS share the same codebase.
 
-- **First session on this machine?** Read [HANDOVER.md](HANDOVER.md). It covers the current state, what has and hasn't been tested, and the first-run checklist.
-- **Work items** are in [TRACKING.md](TRACKING.md). Check it before you start and update it when you finish (rules below).
-- User-facing docs are in [README.md](README.md).
+- **Work items** are in [TRACKING.md](TRACKING.md). Check it before you start and update it when you finish (rules below). Its Done rows record what has been tested and how.
+- [README.md](README.md) has the user-facing docs, plus the troubleshooting table and the design notes. Read the design notes before changing how playback or lookups work.
+- The repo is public at <https://github.com/harispraba/spotify-floating-lyrics>, so keep personal details (paths, emails) out of files and commits.
 
 ## Commands
 

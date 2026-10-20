@@ -9,8 +9,14 @@ use super::{Lyrics, lrc};
 use crate::player::Track;
 
 const API_BASE: &str = "https://lrclib.net/api";
-/// LRCLIB asks clients to identify themselves.
-const USER_AGENT: &str = concat!("spotify-floating-lyrics/", env!("CARGO_PKG_VERSION"));
+/// LRCLIB asks clients to identify themselves, ideally with a link.
+const USER_AGENT: &str = concat!(
+    "spotify-floating-lyrics/",
+    env!("CARGO_PKG_VERSION"),
+    " (",
+    env!("CARGO_PKG_REPOSITORY"),
+    ")"
+);
 const RETRY_DELAY: Duration = Duration::from_millis(800);
 /// Search results further off than this are most likely a different recording.
 const MAX_DURATION_DIFF_MS: u64 = 4_000;
