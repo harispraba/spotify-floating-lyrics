@@ -19,9 +19,11 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 
 | ID | Title | Status | Priority | Notes |
 | --- | --- | --- | --- | --- |
+| BUG-03 | The last line always takes 7 s to fill | todo | P3 | Found writing TASK-17's tests. `syncedView` ignores the song's end, so a short outro cuts the fill off. Pinned in `sync.test.ts` |
 | BUG-01 | Position jumps to the end when SMTC has no timeline | todo | P2 | Found by reading the code. Store Spotify fills in the timeline, so not seen yet. See Details |
 | TASK-09 | Build and test the installer | doing | P2 | `npm run tauri build`, then install and run the NSIS build |
 | TASK-15 | Add renders of the overlay to the README | doing | P2 | Rendered from the real frontend with a mocked Tauri API and made-up lyrics |
+| TASK-18 | Release workflow and v0.1.0 | todo | P1 | A `v*` tag builds the Windows installers into a draft release. Publish after TASK-09 |
 | TASK-10 | Opt-in debug logging | todo | P2 | Only errors are logged now. Log the detected track, the raw SMTC timeline and which LRCLIB step matched |
 | TASK-11 | Replace the default Tauri icons | todo | P2 | The tray and the installer show the Tauri logo |
 | FEAT-10 | Show unsynced lyrics | todo | P2 | Today it says "Only unsynced lyrics exist for this song". Could show the plain text, scrolled by song progress |
@@ -31,7 +33,7 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | FEAT-15 | Start with Windows | todo | P3 | `tauri-plugin-autostart`, with a toggle in the tray |
 | FEAT-16 | Spotify Web API source | todo | P3 | Covers the web player and other devices. Needs a Spotify developer app and PKCE login |
 | FEAT-17 | Save looked-up lyrics to disk | todo | P3 | Fewer LRCLIB calls for songs played again |
-| TASK-12 | Build and run on Linux | todo | P3 | The full app has never been compiled for Linux (needs webkit2gtk) |
+| TASK-12 | Build and run on Linux | todo | P3 | Builds, lints and passes the tests on ubuntu-24.04 in CI (TASK-16). Never run against a real Spotify yet |
 | TASK-13 | Build and run on macOS | todo | P3 | The full app has never been compiled for macOS. Check the Automation permission prompt |
 
 ## Done
@@ -56,6 +58,9 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | TASK-07 | Check the window on a real desktop | 2026-10-20 | All items pass, including Alt+Tab and an exact position restore. Focus at launch is under FEAT-11 |
 | TASK-08 | Check the lock and the tray menu | 2026-10-20 | All items pass. Starting locked was also confirmed from the window's click-through style |
 | TASK-14 | Publish the repo on GitHub | 2026-10-20 | Public at harispraba/spotify-floating-lyrics. MIT license, commits rewritten to the noreply email, HANDOVER.md folded into the README |
+| TASK-16 | CI on every PR | 2026-10-20 | Windows and Linux jobs, about 5 min each on a cold cache. The Linux job is the first full Linux build |
+| TASK-17 | Frontend unit tests | 2026-10-20 | 13 Vitest tests for `src/sync.ts`. Breaking the resync threshold or the fill cap on purpose makes them fail |
+| TASK-19 | Protect main | 2026-10-20 | Ruleset "Protect main": PR with green Windows and Linux checks, squash only, no bypass. A test push straight to main was rejected with GH013 |
 | BUG-02 | A wrapped current line fills on every row at once | 2026-10-20 | The gradient moved to an inline span, so it runs through the rows in reading order. Checked by the user |
 | FEAT-12 | Retry failed lookups automatically | 2026-10-20 | After 3, 10 and 30 s, then every minute, while the song plays. Failures are now logged. See Details |
 

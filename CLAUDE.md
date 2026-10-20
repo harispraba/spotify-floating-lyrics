@@ -15,12 +15,13 @@ Run these from the repo root. They behave the same in PowerShell, cmd and Git Ba
 | `npm install` | Installs the frontend dependencies and the Tauri CLI |
 | `npm run tauri dev` | Runs the app with hot reload. It keeps running until you quit from the tray, so start it in the background. Rust `eprintln!` output shows up here |
 | `npm run build` | Type-checks (tsc) and bundles the frontend |
+| `npm test` | Frontend unit tests (Vitest, `src/*.test.ts`), 13 tests |
 | `cargo test --manifest-path src-tauri/Cargo.toml` | Rust unit tests (LRC parser, LRCLIB matching), 12 tests |
 | `cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets` | Lint. Keep it warning-free |
 | `cargo fmt --manifest-path src-tauri/Cargo.toml` | Formats the Rust code (default rustfmt settings) |
 | `npm run tauri build` | Release build. Installers land in `src-tauri/target/release/bundle/` |
 
-A change is done when `npm run build`, the tests, clippy and fmt are all clean, and the user has checked anything visual.
+A change is done when `npm test`, `npm run build`, the Rust tests, clippy and fmt are all clean, CI is green on its PR, and the user has checked anything visual.
 
 ## Architecture
 
@@ -35,7 +36,10 @@ src-tauri/src/
   lyrics/lrc.rs          LRC parser
 src/
   main.ts                rendering, local playback clock, controls, settings
+  sync.ts                which line to show, how far it's filled, when to resync. Pure and unit tested
   styles.css             all colours and sizes as custom properties at the top
+.github/workflows/
+  ci.yml                 checks on every PR and on main, on Windows and Linux
 ```
 
 A plain `std::thread` in `lib.rs` calls `SpotifySource::poll()` every 500 ms. It stores the result in `AppState` and emits it to the window. Once a song has been seen on two polls in a row, it looks up lyrics on LRCLIB on Tauri's async runtime, and keeps retrying a failed lookup while that song plays. The window keeps its own clock between polls.
@@ -60,8 +64,8 @@ A window API called from the frontend needs a permission in `src-tauri/capabilit
 
 ## Gotchas
 
-- Vite 8 needs Node 20.19+ or 22.12+. If `npm install` crashes with `Cannot read properties of null (reading 'edgesOut')`, run `npx -y npm@11 install`.
-- `package-lock.json` was written by npm 11. npm 10 strips its `libc` fields on install, which is churn, not a real change. Don't commit it; `git checkout package-lock.json` undoes it.
+- Use Node 24, as CI does. Vite 8 needs 20.19+ or 22.12+, and Vitest 5 needs 22.12+ or 24, so Node 23 is out. With fnm, `fnm use 24`. If `npm install` crashes with `Cannot read properties of null (reading 'edgesOut')`, run `npx -y npm@11 install`.
+- `package-lock.json` is written by npm 11, which ships with Node 24. npm 10 strips its `libc` fields on install, which is churn, not a real change. Don't commit it; `git checkout package-lock.json` undoes it.
 - Never build or run inside WSL. A WSL build is a Linux app and can't see the Windows Spotify app.
 - In the `windows` 0.62 crate, you block on WinRT async with `.join()`. It used to be `.get()`.
 - Spotify on Windows only refreshes its reported position on play, pause and seek, so `smtc.rs` extrapolates from `LastUpdatedTime`. Suspect this first if lyrics drift.
@@ -70,6 +74,15 @@ A window API called from the frontend needs a permission in `src-tauri/capabilit
 - `npm run tauri dev` fails with "Port 1420 is already in use" when an earlier dev server is still running. Stop it first.
 - Lock mode makes the window ignore the mouse, and it persists across restarts. Unlock with Ctrl+Alt+Shift+L or the tray menu.
 - You can't see the overlay. For anything visual, ask the user to look, or to take a screenshot with Win+Shift+S and paste it in.
+
+## Branches and PRs
+
+`main` only changes through pull requests. A ruleset blocks direct pushes, with no bypass for anyone, and requires the `Windows` and `Linux` CI checks to pass. PRs are squash-merged, and merged branches are deleted.
+
+- Name the branch after the ID, for example `bug-03-last-line-fill`. Keep to one ID per PR where you can.
+- Start the PR title with the ID. It becomes the commit message on `main`.
+- CI (`.github/workflows/ci.yml`) runs the checks from the Commands table, with clippy at `-D warnings`. Run them locally before pushing.
+- The job names in `ci.yml` are the required checks, so renaming a job means updating the ruleset too.
 
 ## Tracking rules
 
