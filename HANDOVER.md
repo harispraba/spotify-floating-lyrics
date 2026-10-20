@@ -90,7 +90,7 @@ These choices were deliberate. Don't undo them without a reason:
   - Results whose length is more than 4 s off are rejected, because they're most likely a different recording.
   - Synced lyrics beat plain ones.
   - Server errors (5xx) are retried once after 800 ms.
-  - Failed lookups aren't cached, so reload tries again.
+  - Failed lookups aren't cached. While the song plays, they're retried after 3, 10 and 30 s and then every minute, and reload tries again at once.
 - **Lookups wait until a song shows up on two polls in a row.** Skipping through songs then doesn't fire a request for each one, and the duration has time to settle.
 - **The window runs its own clock.** It only resyncs when it's more than 400 ms away from what Spotify reports, so lines don't jitter with poll timing. A line takes at most 7 s to fill.
 - **The poller is a plain thread, not a tokio task**, because the SMTC, D-Bus and osascript calls all block. The lyrics fetch is async.

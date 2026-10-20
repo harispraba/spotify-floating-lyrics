@@ -120,7 +120,7 @@ function computeView(): View {
     case "instrumental":
       return message("♪ Instrumental", title);
     case "failed":
-      return message("Couldn't reach LRCLIB", "Check your connection, then press reload");
+      return message("Couldn't get lyrics from LRCLIB", "Trying again shortly");
     case "synced":
       return syncedView(lyrics.lines, playback.track.durationMs);
   }

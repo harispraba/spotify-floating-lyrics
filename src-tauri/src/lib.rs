@@ -17,6 +17,13 @@ use lyrics::Lyrics;
 use player::{Playback, SpotifySource, Track};
 
 const POLL_INTERVAL: Duration = Duration::from_millis(500);
+/// Waits between retries of a failed lookup; the last one repeats.
+const LOOKUP_RETRY_DELAYS: [Duration; 4] = [
+    Duration::from_secs(3),
+    Duration::from_secs(10),
+    Duration::from_secs(30),
+    Duration::from_secs(60),
+];
 const LOCK_SHORTCUT: &str = "CommandOrControl+Alt+Shift+L";
 const MAIN_WINDOW: &str = "main";
 
@@ -25,6 +32,8 @@ struct AppState {
     playback: Option<Playback>,
     lyrics: Option<TrackLyrics>,
     cache: HashMap<String, Lyrics>,
+    /// Bumped by every lookup, so an older one still in flight or retrying knows to stop.
+    lookup: u64,
     locked: bool,
 }
 
@@ -208,6 +217,8 @@ fn on_playback(app: &AppHandle, playback: Option<Playback>, pending: &mut Option
 }
 
 fn load_lyrics(app: &AppHandle, state: &mut AppState, track: Track) {
+    state.lookup += 1;
+    let lookup = state.lookup;
     if let Some(cached) = state.cache.get(&track.cache_key()).cloned() {
         set_lyrics(
             app,
@@ -231,24 +242,50 @@ fn load_lyrics(app: &AppHandle, state: &mut AppState, track: Track) {
     let app = app.clone();
     tauri::async_runtime::spawn(async move {
         let http = app.state::<reqwest::Client>();
-        let lyrics = lyrics::fetch(&http, &track)
-            .await
-            .unwrap_or_else(|err| Lyrics::Failed {
-                message: format!("{err:#}"),
+        let mut retries = 0;
+        loop {
+            let lyrics = lyrics::fetch(&http, &track).await.unwrap_or_else(|err| {
+                let message = format!("{err:#}");
+                eprintln!("lyrics lookup failed for \"{}\": {message}", track.title);
+                Lyrics::Failed { message }
             });
+            let failed = matches!(lyrics, Lyrics::Failed { .. });
+            {
+                let state = app.state::<SharedState>();
+                let mut state = state.lock().unwrap();
+                if !failed {
+                    state.cache.insert(track.cache_key(), lyrics.clone());
+                }
+                // The song may have changed, or reload been pressed, while the request was in flight.
+                if state.lookup != lookup {
+                    return;
+                }
+                let track = track.clone();
+                set_lyrics(&app, &mut state, TrackLyrics { track, lyrics });
+            }
+            if !failed {
+                return;
+            }
 
-        let state = app.state::<SharedState>();
-        let mut state = state.lock().unwrap();
-        if !matches!(lyrics, Lyrics::Failed { .. }) {
-            state.cache.insert(track.cache_key(), lyrics.clone());
-        }
-        // The song may have changed while the request was in flight.
-        if state
-            .lyrics
-            .as_ref()
-            .is_some_and(|l| l.track.same_song(&track))
-        {
-            set_lyrics(&app, &mut state, TrackLyrics { track, lyrics });
+            // LRCLIB can answer 503 for seconds at a time, and a locked window can't
+            // reach the reload button, so keep trying while this song is playing.
+            loop {
+                let delay = LOOKUP_RETRY_DELAYS[retries.min(LOOKUP_RETRY_DELAYS.len() - 1)];
+                tokio::time::sleep(delay).await;
+                retries += 1;
+                let state = app.state::<SharedState>();
+                let state = state.lock().unwrap();
+                if state.lookup != lookup {
+                    return;
+                }
+                if state
+                    .playback
+                    .as_ref()
+                    .is_some_and(|p| p.track.same_song(&track))
+                {
+                    break;
+                }
+            }
         }
     });
 }

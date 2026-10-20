@@ -38,7 +38,7 @@ src/
   styles.css             all colours and sizes as custom properties at the top
 ```
 
-A plain `std::thread` in `lib.rs` calls `SpotifySource::poll()` every 500 ms. It stores the result in `AppState` and emits it to the window. Once a song has been seen on two polls in a row, it looks up lyrics on LRCLIB on Tauri's async runtime. The window keeps its own clock between polls.
+A plain `std::thread` in `lib.rs` calls `SpotifySource::poll()` every 500 ms. It stores the result in `AppState` and emits it to the window. Once a song has been seen on two polls in a row, it looks up lyrics on LRCLIB on Tauri's async runtime, and keeps retrying a failed lookup while that song plays. The window keeps its own clock between polls.
 
 ### Rust ↔ window contract
 

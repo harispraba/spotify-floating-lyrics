@@ -26,7 +26,6 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | TASK-11 | Replace the default Tauri icons | todo | P2 | The tray and the installer show the Tauri logo |
 | FEAT-10 | Show unsynced lyrics | todo | P2 | Today it says "Only unsynced lyrics exist for this song". Could show the plain text, scrolled by song progress |
 | FEAT-11 | Overlay never takes keyboard focus | todo | P2 | Confirmed: clicking it takes focus from the field you were typing in. See Details |
-| FEAT-12 | Retry failed lookups automatically | todo | P3 | A locked overlay can't reach the reload button, so a network blip sticks until the next song |
 | FEAT-13 | Remember the timing offset per song | todo | P3 | Timing varies per LRCLIB entry, so one global offset doesn't fit every song |
 | FEAT-14 | Colour and theme settings | todo | P3 | Colours are already custom properties at the top of `styles.css` |
 | FEAT-15 | Start with Windows | todo | P3 | `tauri-plugin-autostart`, with a toggle in the tray |
@@ -56,6 +55,7 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | TASK-06 | Check lyric sync over a whole song | 2026-10-20 | Checked by the user with the Store app: on time through a whole song, pause, seek and skip |
 | TASK-07 | Check the window on a real desktop | 2026-10-20 | All items pass, including Alt+Tab and an exact position restore. Focus at launch is under FEAT-11 |
 | BUG-02 | A wrapped current line fills on every row at once | 2026-10-20 | The gradient moved to an inline span, so it runs through the rows in reading order. Checked by the user |
+| FEAT-12 | Retry failed lookups automatically | 2026-10-20 | After 3, 10 and 30 s, then every minute, while the song plays. Failures are now logged. See Details |
 
 ## Dropped
 
@@ -97,6 +97,14 @@ If the lyrics gradually run ahead or fall behind over a song, the extrapolation 
 Checked in TASK-07. The window's extended style is `0x40118` (`TOPMOST`, `APPWINDOW`), with no `WS_EX_NOACTIVATE`, and `tauri.conf.json` leaves `focus` at its default of on. When it was launched from a background shell, it didn't take focus from the app in front, but Windows' foreground lock may be what stopped it there. In TASK-08 the user confirmed that clicking the overlay takes keyboard focus from the field they were typing in. Still to check: whether it also takes focus when the user launches it.
 
 To read the overlay's styles from outside, find the window with class `Tauri Window`. During startup, `Process.MainWindowHandle` can return tao's `Tao Thread Event Target` instead, which is visible, 18×18 and click-through by design.
+
+### FEAT-12 Retry failed lookups automatically
+
+In TASK-08, the lookup for "And the Hero Will Drown (10 Year Version)" failed and stayed failed. Replaying the requests showed `/search` answering 503 `ServerOverloaded` ("The server is busy, please retry in a moment"). Seconds later, eight requests in a row got 200, so the overload is brief but long enough to beat the single 800 ms retry in `lrclib.rs`.
+
+`load_lyrics` in `lib.rs` now keeps retrying while that song is playing. A newer lookup, for another song or from reload, stops the older one through the `lookup` counter in `AppState`. Each failure is logged with its cause, and the window says "Couldn't get lyrics from LRCLIB" and "Trying again shortly".
+
+To test it, the app was run with `HTTPS_PROXY` pointing at a local proxy that refused its first four tunnels. The lookups failed at 0 s and 3 s and succeeded at 13 s, as planned.
 
 ### BUG-01 Position jumps to the end when SMTC has no timeline
 
