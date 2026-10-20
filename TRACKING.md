@@ -19,8 +19,7 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 
 | ID | Title | Status | Priority | Notes |
 | --- | --- | --- | --- | --- |
-| TASK-06 | Check lyric sync over a whole song | todo | P1 | See Details |
-| TASK-07 | Check the window on a real desktop | todo | P1 | See Details |
+| TASK-07 | Check the window on a real desktop | doing | P1 | Transparent, on top, off the taskbar, readable on white and dark. Left: Alt+Tab, restart, focus |
 | TASK-08 | Check the lock and the tray menu | todo | P1 | See Details |
 | BUG-01 | Position jumps to the end when SMTC has no timeline | todo | P2 | Found by reading the code. Store Spotify fills in the timeline, so not seen yet. See Details |
 | TASK-09 | Build and test the installer | todo | P2 | `npm run tauri build`, then install and run the NSIS build |
@@ -55,6 +54,7 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | TASK-03 | Move the project to Windows and make the initial commit | 2026-10-20 | Copy matches the WSL tree. Committed before the first build, so Windows fixes show up as their own diffs |
 | TASK-04 | First Windows build: install, test, lint, launch | 2026-10-20 | Rust 1.99.1, VS 2022 Build Tools, Node 23.1 through fnm. 12/12 tests, clippy and fmt clean, window shows |
 | TASK-05 | Check Spotify detection on Windows | 2026-10-20 | Store version 1.305.3058. Right title and artist on hover; synced lyrics load and advance |
+| TASK-06 | Check lyric sync over a whole song | 2026-10-20 | Checked by the user with the Store app: on time through a whole song, pause, seek and skip |
 
 ## Dropped
 
