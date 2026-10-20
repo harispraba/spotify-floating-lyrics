@@ -5,8 +5,8 @@ Written 2026-10-20 at the end of the first build session. The app was written an
 ## Where things stand
 
 - **v0.1.0 has every feature planned for a first try:** the overlay, Spotify detection on all three OSes, LRCLIB lookup, click-through lock, hover toolbar and tray menu. The full list is FEAT-01 to FEAT-09 in TRACKING.md.
-- **The project is on Windows and committed** (TASK-03), and it builds, passes its checks and runs there (TASK-04). It reads the Store version of Spotify, keeps lyrics in sync and behaves as an overlay should (TASK-05 to TASK-07). `C:\dev\spotify-floating-lyrics` is the real copy now.
-- **Next job:** check the lock and the tray menu (TASK-08).
+- **The project is on Windows and committed** (TASK-03), and it builds, passes its checks and runs there (TASK-04). It reads the Store version of Spotify, keeps lyrics in sync, and the window, lock and tray all work (TASK-05 to TASK-08). `C:\dev\spotify-floating-lyrics` is the real copy now.
+- **Next job:** every P1 item is done. Next come the P2 items in TRACKING.md, starting with the installer (TASK-09).
 
 ## 1. Move the project to Windows
 
@@ -56,10 +56,10 @@ Do these in order:
 | Windows playback reader | The Store version of Spotify (1.305.3058) through SMTC | Right title and artist; synced lyrics load and advance |
 | Lyric sync on Windows | A whole song with pause, seek and skip, watched by the user | On time |
 | Window on a Windows desktop | Checked by the user, plus the window's styles and rect read through user32 | Transparent, on top, out of the taskbar and Alt+Tab; position and size restored exactly |
+| Lock and tray on Windows | Checked by the user, plus the click-through style read at launch | Click-through, shortcut, toast, check marks and starting locked all work |
 
 Not done yet:
 
-- Click-through on a real desktop (TASK-08)
 - Building the installer
 - Building the full app for Linux or macOS
 

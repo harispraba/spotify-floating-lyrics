@@ -19,7 +19,6 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 
 | ID | Title | Status | Priority | Notes |
 | --- | --- | --- | --- | --- |
-| TASK-08 | Check the lock and the tray menu | doing | P1 | Lock, shortcut, starting locked, "Show lyrics" and Quit pass. Left: the toast and the two check marks |
 | BUG-01 | Position jumps to the end when SMTC has no timeline | todo | P2 | Found by reading the code. Store Spotify fills in the timeline, so not seen yet. See Details |
 | TASK-09 | Build and test the installer | todo | P2 | `npm run tauri build`, then install and run the NSIS build |
 | TASK-10 | Opt-in debug logging | todo | P2 | Only errors are logged now. Log the detected track, the raw SMTC timeline and which LRCLIB step matched |
@@ -54,6 +53,7 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | TASK-05 | Check Spotify detection on Windows | 2026-10-20 | Store version 1.305.3058. Right title and artist on hover; synced lyrics load and advance |
 | TASK-06 | Check lyric sync over a whole song | 2026-10-20 | Checked by the user with the Store app: on time through a whole song, pause, seek and skip |
 | TASK-07 | Check the window on a real desktop | 2026-10-20 | All items pass, including Alt+Tab and an exact position restore. Focus at launch is under FEAT-11 |
+| TASK-08 | Check the lock and the tray menu | 2026-10-20 | All items pass. Starting locked was also confirmed from the window's click-through style |
 | BUG-02 | A wrapped current line fills on every row at once | 2026-10-20 | The gradient moved to an inline span, so it runs through the rows in reading order. Checked by the user |
 | FEAT-12 | Retry failed lookups automatically | 2026-10-20 | After 3, 10 and 30 s, then every minute, while the song plays. Failures are now logged. See Details |
 
