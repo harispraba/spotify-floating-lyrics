@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spotify Floating Lyrics</title>
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+
+  <body>
+    <main class="stage" id="stage">
+      <header class="bar">
+        <p class="now" id="now">
+          <span class="now-title" id="now-title"></span>
+          <span class="now-artist" id="now-artist"></span>
+        </p>
+        <div class="controls" id="controls" role="toolbar" aria-label="Lyrics controls">
+          <button type="button" data-action="smaller" title="Smaller text" aria-label="Smaller text">A−</button>
+          <button type="button" data-action="larger" title="Larger text" aria-label="Larger text">A+</button>
+          <span class="offset" title="Lyrics timing">
+            <button type="button" data-action="later" title="Show lyrics 0.25 s later" aria-label="Show lyrics later">−</button>
+            <button type="button" class="offset-value" id="offset" data-action="resetOffset" title="Timing offset (click to reset)" aria-label="Reset timing offset">0.00 s</button>
+            <button type="button" data-action="earlier" title="Show lyrics 0.25 s earlier" aria-label="Show lyrics earlier">+</button>
+          </span>
+          <button type="button" data-action="context" id="context" title="Show previous and next lines" aria-label="Show previous and next lines" aria-pressed="true">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5h6M2.5 8h11M5 12.5h6" /></svg>
+          </button>
+          <button type="button" data-action="reload" title="Reload lyrics" aria-label="Reload lyrics">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.46-3.54" /><path d="M12.5 1.8v3h-3" /></svg>
+          </button>
+          <button type="button" data-action="lock" title="Lock: clicks pass through the lyrics" aria-label="Lock window">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5" /><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" /></svg>
+          </button>
+          <button type="button" data-action="hide" title="Hide (reopen from the tray icon)" aria-label="Hide window">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+          </button>
+        </div>
+      </header>
+
+      <section class="lyrics" id="lyrics">
+        <p class="line context" id="prev"></p>
+        <p class="line current" id="current"></p>
+        <p class="line context" id="next"></p>
+      </section>
+
+      <div class="grip" id="grip" title="Resize" aria-hidden="true"></div>
+      <p class="toast" id="toast" role="status"></p>
+    </main>
+  </body>
+</html>

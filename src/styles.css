@@ -1,0 +1,289 @@
+:root {
+  /* The window is transparent and floats over anything, so every colour is
+     paired with a dark halo that keeps it readable on light backgrounds too. */
+  --sung: #ffc86b;
+  --unsung: rgb(255 246 232 / 0.84);
+  --context: rgb(255 246 232 / 0.76);
+  --ink: rgb(255 246 232 / 0.9);
+  --halo: rgb(16 11 6 / 0.85);
+  --glass: rgb(28 22 17 / 0.66);
+  --glass-edge: rgb(255 232 200 / 0.16);
+
+  --size: 30px;
+  --font: "Bricolage Grotesque Variable", "Segoe UI Variable Display", "Segoe UI", system-ui,
+    "Noto Sans", sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--context);
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.stage {
+  position: relative;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 30px 18px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  transition:
+    background-color 0.18s,
+    border-color 0.18s;
+}
+
+/* Hover reveals the window's edges and its controls; locked windows never get hover. */
+body:not(.locked) .stage:hover {
+  background: var(--glass);
+  border-color: var(--glass-edge);
+}
+
+/* ---- Toolbar ---------------------------------------------------------- */
+
+.bar {
+  position: absolute;
+  inset: 5px 8px auto 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s;
+}
+
+body:not(.locked) .stage:hover .bar,
+.bar:focus-within {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.now {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  display: flex;
+  gap: 0.55em;
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+
+.now-title,
+.now-artist {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.now-title {
+  color: var(--ink);
+  font-weight: 620;
+}
+
+.now-artist {
+  color: var(--context);
+  font-weight: 430;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.controls button {
+  appearance: none;
+  height: 24px;
+  min-width: 24px;
+  padding: 0 6px;
+  display: inline-grid;
+  place-items: center;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: rgb(255 246 232 / 0.75);
+  font: 600 13px/1 var(--font);
+  font-variant-numeric: tabular-nums;
+}
+
+.controls button:hover {
+  background: rgb(255 246 232 / 0.1);
+  color: #fff;
+}
+
+.controls button:focus-visible {
+  outline: 2px solid var(--sung);
+  outline-offset: 1px;
+}
+
+.controls button[aria-pressed="true"] {
+  color: var(--sung);
+}
+
+.controls svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.offset {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 4px;
+  border-radius: 7px;
+  box-shadow: inset 0 0 0 1px rgb(255 246 232 / 0.12);
+}
+
+.controls .offset-value {
+  min-width: 52px;
+  font-weight: 500;
+}
+
+/* ---- Lyrics ----------------------------------------------------------- */
+
+.lyrics {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.14em;
+  font-size: var(--size);
+  text-align: center;
+  transition: opacity 0.3s;
+}
+
+.line {
+  max-width: 100%;
+  margin: 0;
+  line-height: 1.2;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.line:empty {
+  display: none;
+}
+
+.line.context {
+  font-size: 0.6em;
+  font-weight: 480;
+  color: var(--context);
+  text-shadow:
+    0 0 1px var(--halo),
+    0 1px 3px var(--halo),
+    0 0 10px rgb(16 11 6 / 0.3);
+}
+
+/* The sung part of the line fills in from the left as the song plays.
+   drop-shadow (not text-shadow) keeps the halo behind the clipped gradient. */
+.line.current {
+  font-weight: 720;
+  letter-spacing: -0.01em;
+  color: transparent;
+  background: linear-gradient(90deg, var(--sung) var(--fill, 0%), var(--unsung) var(--fill, 0%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 0 1.5px var(--halo)) drop-shadow(0 2px 6px rgb(16 11 6 / 0.55));
+}
+
+.line.current.status {
+  font-size: 0.62em;
+  font-weight: 600;
+  color: var(--ink);
+  background: none;
+}
+
+.line.current.rise {
+  animation: rise 0.24s ease-out;
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(0.3em);
+    opacity: 0.4;
+  }
+}
+
+body.compact .line.context {
+  display: none;
+}
+
+body.paused .lyrics {
+  opacity: 0.6;
+}
+
+/* ---- Resize grip & toast ---------------------------------------------- */
+
+.grip {
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 14px;
+  height: 14px;
+  cursor: nwse-resize;
+  opacity: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 0 45%,
+    var(--glass-edge) 45% 55%,
+    transparent 55% 70%,
+    var(--glass-edge) 70% 80%,
+    transparent 80%
+  );
+}
+
+body:not(.locked) .stage:hover .grip {
+  opacity: 1;
+}
+
+.toast {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  max-width: calc(100% - 32px);
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: var(--glass);
+  box-shadow: inset 0 0 0 1px var(--glass-edge);
+  color: var(--ink);
+  font-size: 12.5px;
+  font-weight: 500;
+  text-align: center;
+  transform: translate(-50%, 4px);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line.current.rise {
+    animation: none;
+  }
+
+  .toast {
+    transition: none;
+  }
+}
