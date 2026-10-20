@@ -40,6 +40,7 @@ src/
   styles.css             all colours and sizes as custom properties at the top
 .github/workflows/
   ci.yml                 checks on every PR and on main, on Windows and Linux
+  release.yml            on a v* tag, builds the Windows installers into a draft release
 ```
 
 A plain `std::thread` in `lib.rs` calls `SpotifySource::poll()` every 500 ms. It stores the result in `AppState` and emits it to the window. Once a song has been seen on two polls in a row, it looks up lyrics on LRCLIB on Tauri's async runtime, and keeps retrying a failed lookup while that song plays. The window keeps its own clock between polls.
@@ -83,6 +84,14 @@ A window API called from the frontend needs a permission in `src-tauri/capabilit
 - Start the PR title with the ID. It becomes the commit message on `main`.
 - CI (`.github/workflows/ci.yml`) runs the checks from the Commands table, with clippy at `-D warnings`. Run them locally before pushing.
 - The job names in `ci.yml` are the required checks, so renaming a job means updating the ruleset too.
+- GitHub writes the squash commit itself, with the account's primary email unless that's set to private. When merging with `gh`, pass `--author-email 33797483+harispraba@users.noreply.github.com`.
+
+## Releases
+
+1. In a PR, bump the version in `package.json`, `src-tauri/Cargo.toml` and `src-tauri/tauri.conf.json`. Run `cargo check --manifest-path src-tauri/Cargo.toml` so `Cargo.lock` picks it up.
+2. Once it's merged, tag `main` and push the tag: `git tag -a v0.2.0 -m v0.2.0` then `git push origin v0.2.0`. Tags aren't covered by the ruleset.
+3. `release.yml` stops if the tag doesn't match all three versions. Otherwise it builds the NSIS and MSI installers and attaches them to a draft release, in about 10 minutes.
+4. Download the installer from the draft, install it and try it, then publish the release.
 
 ## Tracking rules
 
