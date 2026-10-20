@@ -5,6 +5,8 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
+import { message, needsResync, syncedView, type View } from "./sync";
+
 // ---- Payloads sent by the Rust side (src-tauri/src/lib.rs) ----------------
 
 type Track = { title: string; artist: string; album: string; durationMs: number };
@@ -47,11 +49,6 @@ const settings = loadSettings();
 
 // ---- Playback clock -----------------------------------------------------------
 
-/** Only jump the local clock when it drifts this far from what Spotify reports. */
-const RESYNC_THRESHOLD_MS = 400;
-/** Cap on how long a line takes to fill, so lines followed by long gaps don't crawl. */
-const MAX_FILL_MS = 7000;
-
 let playback: Playback | null = null;
 let trackLyrics: TrackLyrics | null = null;
 let clock = { positionMs: 0, at: 0, playing: false };
@@ -66,8 +63,7 @@ function sameSong(a: Track, b: Track): boolean {
 
 function onPlayback(next: Playback | null) {
   const songChanged = !next || !playback || !sameSong(next.track, playback.track);
-  const drift = next ? Math.abs(positionNow() - next.positionMs) : 0;
-  if (next && (songChanged || next.isPlaying !== clock.playing || drift > RESYNC_THRESHOLD_MS)) {
+  if (next && needsResync({ positionMs: positionNow(), playing: clock.playing }, next, songChanged)) {
     clock = { positionMs: next.positionMs, at: performance.now(), playing: next.isPlaying };
   }
   playback = next;
@@ -89,19 +85,6 @@ const offsetEl = $("offset");
 const contextButton = $("context");
 const toastEl = $("toast");
 
-type View = {
-  prev: string;
-  current: string;
-  next: string;
-  /** Lyric line index, or -1 for status messages. */
-  index: number;
-  fill: number;
-};
-
-function message(text: string, detail = ""): View {
-  return { prev: "", current: text, next: detail, index: -1, fill: 0 };
-}
-
 function computeView(): View {
   if (!playback) {
     return message("Play a song in Spotify to see its lyrics");
@@ -122,44 +105,8 @@ function computeView(): View {
     case "failed":
       return message("Couldn't get lyrics from LRCLIB", "Trying again shortly");
     case "synced":
-      return syncedView(lyrics.lines, playback.track.durationMs);
+      return syncedView(lyrics.lines, playback.track.durationMs, positionNow() + settings.offsetMs);
   }
-}
-
-function syncedView(lines: Line[], durationMs: number): View {
-  const pos = positionNow() + settings.offsetMs;
-  const i = lineIndexAt(lines, pos);
-  const text = (k: number) => (k < 0 || k >= lines.length ? "" : lines[k].text || "♪");
-
-  // Intro before the first line: a note that fills until the singing starts.
-  if (i < 0) {
-    return { prev: "", current: "♪", next: text(0), index: -2, fill: clamp(pos / lines[0].timeMs) };
-  }
-  const start = lines[i].timeMs;
-  const end = i + 1 < lines.length ? lines[i + 1].timeMs : Math.max(durationMs, start + MAX_FILL_MS);
-  const fill = clamp((pos - start) / Math.min(end - start, MAX_FILL_MS));
-  return { prev: text(i - 1), current: text(i), next: text(i + 1), index: i, fill };
-}
-
-/** Index of the last line starting at or before `pos`, or -1 before the first line. */
-function lineIndexAt(lines: Line[], pos: number): number {
-  let lo = 0;
-  let hi = lines.length - 1;
-  let found = -1;
-  while (lo <= hi) {
-    const mid = (lo + hi) >> 1;
-    if (lines[mid].timeMs <= pos) {
-      found = mid;
-      lo = mid + 1;
-    } else {
-      hi = mid - 1;
-    }
-  }
-  return found;
-}
-
-function clamp(n: number): number {
-  return Number.isFinite(n) ? Math.min(1, Math.max(0, n)) : 1;
 }
 
 let shown: View = { prev: "", current: "", next: "", index: NaN, fill: NaN };

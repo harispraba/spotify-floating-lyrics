@@ -104,11 +104,14 @@ When you run it with `npm run tauri dev`, errors are printed in that terminal.
 ## Development
 
 ```bash
+npm test                                                          # frontend unit tests (Vitest)
 npm run build                                                     # type-check + bundle the frontend
 cargo test --manifest-path src-tauri/Cargo.toml                   # LRC parser and LRCLIB matching tests
 cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets
 cargo fmt --manifest-path src-tauri/Cargo.toml
 ```
+
+Use Node 24. Changes to `main` go through pull requests, and CI runs all of the above on Windows and Linux for each one.
 
 Open work and known bugs are tracked in [TRACKING.md](TRACKING.md). [CLAUDE.md](CLAUDE.md) has the conventions and gotchas. It's written for Claude Code, but it's just as useful to read yourself.
 
