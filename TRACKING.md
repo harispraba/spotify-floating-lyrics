@@ -21,11 +21,10 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | --- | --- | --- | --- | --- |
 | BUG-03 | The last line always takes 7 s to fill | todo | P3 | Found writing TASK-17's tests. `syncedView` ignores the song's end, so a short outro cuts the fill off. Pinned in `sync.test.ts` |
 | BUG-01 | Position jumps to the end when SMTC has no timeline | todo | P2 | Found by reading the code. Store Spotify fills in the timeline, so not seen yet. See Details |
-| TASK-09 | Build and test the installer | doing | P2 | `npm run tauri build`, then install and run the NSIS build |
 | TASK-15 | Add renders of the overlay to the README | doing | P2 | Rendered from the real frontend with a mocked Tauri API and made-up lyrics |
-| TASK-18 | Release workflow and v0.1.0 | doing | P1 | A `v*` tag builds the Windows installers into a draft release. Publish after TASK-09 |
 | TASK-10 | Opt-in debug logging | todo | P2 | Only errors are logged now. Log the detected track, the raw SMTC timeline and which LRCLIB step matched |
 | TASK-11 | Replace the default Tauri icons | todo | P2 | The tray and the installer show the Tauri logo |
+| TASK-20 | Fill in the installer metadata | todo | P3 | Windows lists the publisher as "harispraba", taken from the identifier. Set `publisher`, `copyright` and `licenseFile` under `bundle` in `tauri.conf.json` |
 | FEAT-10 | Show unsynced lyrics | todo | P2 | Today it says "Only unsynced lyrics exist for this song". Could show the plain text, scrolled by song progress |
 | FEAT-11 | Overlay never takes keyboard focus | todo | P2 | Confirmed: clicking it takes focus from the field you were typing in. See Details |
 | FEAT-13 | Remember the timing offset per song | todo | P3 | Timing varies per LRCLIB entry, so one global offset doesn't fit every song |
@@ -61,6 +60,8 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | TASK-16 | CI on every PR | 2026-10-20 | Windows and Linux jobs, about 5 min each on a cold cache. The Linux job is the first full Linux build |
 | TASK-17 | Frontend unit tests | 2026-10-20 | 13 Vitest tests for `src/sync.ts`. Breaking the resync threshold or the fill cap on purpose makes them fail |
 | TASK-19 | Protect main | 2026-10-20 | Ruleset "Protect main": PR with green Windows and Linux checks, squash only, no bypass. A test push straight to main was rejected with GH013 |
+| TASK-18 | Release workflow and v0.1.0 | 2026-10-21 | Tag `v0.1.0` built both installers in CI into a draft release, which was published once TASK-09 passed |
+| TASK-09 | Build and test the installer | 2026-10-21 | The NSIS installer downloaded from the v0.1.0 draft installs per user into `%LOCALAPPDATA%`, with a Start menu shortcut, and runs. Checked by the user |
 | BUG-02 | A wrapped current line fills on every row at once | 2026-10-20 | The gradient moved to an inline span, so it runs through the rows in reading order. Checked by the user |
 | FEAT-12 | Retry failed lookups automatically | 2026-10-20 | After 3, 10 and 30 s, then every minute, while the song plays. Failures are now logged. See Details |
 
