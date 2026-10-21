@@ -38,6 +38,9 @@ src/
   main.ts                rendering, local playback clock, controls, settings
   sync.ts                which line to show, how far it's filled, when to resync. Pure and unit tested
   styles.css             all colours and sizes as custom properties at the top
+docs/
+  overlay.png, toolbar.png  README images, rendered by docs/render
+  render/                renders the real frontend in headless Edge, with a mocked Tauri API
 .github/workflows/
   ci.yml                 checks on every PR and on main, on Windows and Linux
   release.yml            on a v* tag, builds the Windows installers into a draft release
@@ -61,7 +64,8 @@ A window API called from the frontend needs a permission in `src-tauri/capabilit
 - Comments explain why, not what, and are sparse. Match the density of the surrounding code.
 - No frontend framework. User-facing text is short, plain and in sentence case.
 - Settings live in the window's localStorage under the `settings` key.
-- Think twice before adding a dependency. In particular, reqwest uses `native-tls` with default features off, which keeps aws-lc-rs and its C build out of the tree. Keep it that way.
+- Think twice before adding a dependency. In particular, reqwest uses `native-tls` with default features off, which keeps aws-lc-rs and its C build out of the tree. Keep it that way. `docs/render` has its own `package.json` so that `puppeteer-core` never reaches the app or CI.
+- After a visible UI change, regenerate the README images: `npm run build`, then `cd docs/render`, `npm ci` and `npm run render`. The output is deterministic, so unchanged images come out byte-identical. The sample song and lyrics in `mock.js` are made up; keep real lyrics out of the repo.
 
 ## Gotchas
 

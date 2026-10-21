@@ -1,0 +1,41 @@
+<!doctype html>
+<meta charset="utf-8" />
+<style>
+  html, body { margin: 0; width: 1120px; height: 520px; overflow: hidden; }
+  body {
+    position: relative;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    background:
+      radial-gradient(800px 480px at 88% 10%, rgb(98 74 170 / 0.55), transparent 65%),
+      radial-gradient(760px 460px at 15% 100%, rgb(30 96 128 / 0.55), transparent 60%),
+      linear-gradient(135deg, #15121f 0%, #1c1932 50%, #0f1b26 100%);
+  }
+  .win {
+    position: absolute; left: 48px; top: 40px; width: 640px; height: 440px;
+    background: #fbfbfa; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 24px 60px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.06);
+  }
+  .titlebar {
+    height: 36px; display: flex; align-items: center; padding-left: 16px;
+    background: #f0f0ee; border-bottom: 1px solid #e3e3df; font-size: 12px; color: #333;
+  }
+  .titlebar .title { flex: 1; }
+  .titlebar .ctl { width: 46px; text-align: center; color: #555; font-size: 12px; }
+  .doc { padding: 26px 36px; color: #2b2b2b; }
+  .doc h1 { font: 600 22px/1.3 "Segoe UI", sans-serif; margin: 0 0 12px; }
+  .doc p { font: 14.5px/1.7 "Segoe UI", sans-serif; margin: 0 0 10px; color: #444; }
+  iframe {
+    position: absolute; left: 300px; top: 290px; width: 760px; height: 190px;
+    border: 0; background: transparent; color-scheme: normal;
+  }
+</style>
+<div class="win">
+  <div class="titlebar"><span class="title">Notes</span><span class="ctl">—</span><span class="ctl">▢</span><span class="ctl">✕</span></div>
+  <div class="doc">
+    <h1>Saturday</h1>
+    <p>Pick up the film from the lab before noon, and ask about the camera that was in the window.</p>
+    <p>Check whether the ferry still runs on weekends, and how early the first one leaves.</p>
+    <p>Finish the playlist for the drive. Something slow for the coast road.</p>
+  </div>
+</div>
+<iframe src="/" allowtransparency="true"></iframe>
