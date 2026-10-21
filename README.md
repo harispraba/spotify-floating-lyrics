@@ -10,7 +10,7 @@ A small always-on-top, see-through window that shows time-synced lyrics for what
 - **Lyrics from [LRCLIB](https://lrclib.net)**, a free, open database of synced lyrics.
 - **Click-through lock** so the lyrics never block what's underneath.
 
-> **Status:** v0.1.0. Tested on Windows 11 with the Microsoft Store version of Spotify. The Linux version builds and passes its tests in CI but hasn't been run yet, and the macOS version hasn't been built.
+> **Status:** v0.2.0. Tested on Windows 11 with the Microsoft Store version of Spotify. The Linux version builds and passes its tests in CI but hasn't been run yet, and the macOS version hasn't been built.
 
 ## Download
 
