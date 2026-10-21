@@ -22,6 +22,7 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | BUG-03 | The last line always takes 7 s to fill | todo | P3 | Found writing TASK-17's tests. `syncedView` ignores the song's end, so a short outro cuts the fill off. Pinned in `sync.test.ts` |
 | BUG-01 | Position jumps to the end when SMTC has no timeline | todo | P2 | Found by reading the code. Store Spotify fills in the timeline, so not seen yet. See Details |
 | TASK-10 | Opt-in debug logging | todo | P2 | Only errors are logged now. Log the detected track, the raw SMTC timeline and which LRCLIB step matched |
+| TASK-21 | Release v0.2.0 | doing | P2 | FEAT-11 and the new icon (TASK-11). Bump in this PR, then tag `v0.2.0`, try the draft, publish |
 | TASK-20 | Fill in the installer metadata | todo | P3 | Windows lists the publisher as "harispraba", taken from the identifier. Set `publisher`, `copyright` and `licenseFile` under `bundle` in `tauri.conf.json` |
 | FEAT-10 | Show unsynced lyrics | todo | P2 | Today it says "Only unsynced lyrics exist for this song". Could show the plain text, scrolled by song progress |
 | FEAT-13 | Remember the timing offset per song | todo | P3 | Timing varies per LRCLIB entry, so one global offset doesn't fit every song |
