@@ -136,6 +136,7 @@ These choices are deliberate:
 - **The window runs its own clock.** It only resyncs when it's more than 400 ms away from what Spotify reports, so lines don't jitter with poll timing. A line takes at most 7 s to fill.
 - **The poller is a plain thread, not a tokio task**, because the SMTC, D-Bus and osascript calls all block. The lyrics fetch is async.
 - **Only window position and size are restored.** Restoring visibility as well could start the app hidden.
+- **The window never takes keyboard focus** (`"focusable": false`), so clicking, dragging or using the toolbar doesn't interrupt typing in another app. The toolbar works by mouse only as a result.
 - **Unsynced lyrics show a message** instead of guessed timings. Showing them properly is FEAT-10.
 - **reqwest uses native-tls**, which is SChannel on Windows. This keeps aws-lc-rs and its C build out of the dependency tree.
 
