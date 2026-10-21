@@ -22,7 +22,6 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | BUG-03 | The last line always takes 7 s to fill | todo | P3 | Found writing TASK-17's tests. `syncedView` ignores the song's end, so a short outro cuts the fill off. Pinned in `sync.test.ts` |
 | BUG-01 | Position jumps to the end when SMTC has no timeline | todo | P2 | Found by reading the code. Store Spotify fills in the timeline, so not seen yet. See Details |
 | TASK-10 | Opt-in debug logging | todo | P2 | Only errors are logged now. Log the detected track, the raw SMTC timeline and which LRCLIB step matched |
-| TASK-11 | Replace the default Tauri icons | todo | P2 | The tray and the installer show the Tauri logo |
 | TASK-20 | Fill in the installer metadata | todo | P3 | Windows lists the publisher as "harispraba", taken from the identifier. Set `publisher`, `copyright` and `licenseFile` under `bundle` in `tauri.conf.json` |
 | FEAT-10 | Show unsynced lyrics | todo | P2 | Today it says "Only unsynced lyrics exist for this song". Could show the plain text, scrolled by song progress |
 | FEAT-13 | Remember the timing offset per song | todo | P3 | Timing varies per LRCLIB entry, so one global offset doesn't fit every song |
@@ -62,6 +61,7 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | TASK-09 | Build and test the installer | 2026-10-21 | The NSIS installer downloaded from the v0.1.0 draft installs per user into `%LOCALAPPDATA%`, with a Start menu shortcut, and runs. Checked by the user |
 | TASK-15 | Add renders of the overlay to the README | 2026-10-21 | `docs/render` renders the real frontend with a mocked Tauri API and made-up lyrics. Output is byte-identical between runs. Checked by the user |
 | FEAT-11 | Overlay never takes keyboard focus | 2026-10-21 | `"focus": false` and `"focusable": false` in `tauri.conf.json`; no platform code. Checked by the user. See Details |
+| TASK-11 | Replace the default Tauri icons | 2026-10-21 | An amber tile with three lyric lines, the middle one part sung. Every size is generated from `src-tauri/icons/app-icon.svg`. The user checked the tray icon |
 | BUG-02 | A wrapped current line fills on every row at once | 2026-10-20 | The gradient moved to an inline span, so it runs through the rows in reading order. Checked by the user |
 | FEAT-12 | Retry failed lookups automatically | 2026-10-20 | After 3, 10 and 30 s, then every minute, while the song plays. Failures are now logged. See Details |
 

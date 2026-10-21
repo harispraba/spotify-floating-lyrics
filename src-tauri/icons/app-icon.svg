@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Source for every icon in this folder: npx tauri icon src-tauri/icons/app-icon.svg
+       Three lyric lines on an amber tile, the middle one part sung, like the overlay. -->
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffd58a" />
+      <stop offset="1" stop-color="#f4a93c" />
+    </linearGradient>
+    <clipPath id="current">
+      <rect x="176" y="452" width="672" height="120" rx="60" />
+    </clipPath>
+  </defs>
+  <rect x="48" y="48" width="928" height="928" rx="210" fill="url(#tile)" />
+  <rect x="292" y="282" width="440" height="72" rx="36" fill="#3a2a14" fill-opacity="0.55" />
+  <g clip-path="url(#current)">
+    <rect x="176" y="452" width="672" height="120" fill="#3a2a14" />
+    <rect x="176" y="452" width="400" height="120" fill="#fffaf0" />
+  </g>
+  <rect x="332" y="670" width="360" height="72" rx="36" fill="#3a2a14" fill-opacity="0.55" />
+</svg>
