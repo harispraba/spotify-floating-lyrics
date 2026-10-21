@@ -25,7 +25,6 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | TASK-11 | Replace the default Tauri icons | todo | P2 | The tray and the installer show the Tauri logo |
 | TASK-20 | Fill in the installer metadata | todo | P3 | Windows lists the publisher as "harispraba", taken from the identifier. Set `publisher`, `copyright` and `licenseFile` under `bundle` in `tauri.conf.json` |
 | FEAT-10 | Show unsynced lyrics | todo | P2 | Today it says "Only unsynced lyrics exist for this song". Could show the plain text, scrolled by song progress |
-| FEAT-11 | Overlay never takes keyboard focus | todo | P2 | Confirmed: clicking it takes focus from the field you were typing in. See Details |
 | FEAT-13 | Remember the timing offset per song | todo | P3 | Timing varies per LRCLIB entry, so one global offset doesn't fit every song |
 | FEAT-14 | Colour and theme settings | todo | P3 | Colours are already custom properties at the top of `styles.css` |
 | FEAT-15 | Start with Windows | todo | P3 | `tauri-plugin-autostart`, with a toggle in the tray |
@@ -62,6 +61,7 @@ Every piece of work gets an ID. Search for one (`BUG-01`) to find its row, and s
 | TASK-18 | Release workflow and v0.1.0 | 2026-10-21 | Tag `v0.1.0` built both installers in CI into a draft release, which was published once TASK-09 passed |
 | TASK-09 | Build and test the installer | 2026-10-21 | The NSIS installer downloaded from the v0.1.0 draft installs per user into `%LOCALAPPDATA%`, with a Start menu shortcut, and runs. Checked by the user |
 | TASK-15 | Add renders of the overlay to the README | 2026-10-21 | `docs/render` renders the real frontend with a mocked Tauri API and made-up lyrics. Output is byte-identical between runs. Checked by the user |
+| FEAT-11 | Overlay never takes keyboard focus | 2026-10-21 | `"focus": false` and `"focusable": false` in `tauri.conf.json`; no platform code. Checked by the user. See Details |
 | BUG-02 | A wrapped current line fills on every row at once | 2026-10-20 | The gradient moved to an inline span, so it runs through the rows in reading order. Checked by the user |
 | FEAT-12 | Retry failed lookups automatically | 2026-10-20 | After 3, 10 and 30 s, then every minute, while the song plays. Failures are now logged. See Details |
 
@@ -102,7 +102,9 @@ If the lyrics gradually run ahead or fall behind over a song, the extrapolation 
 
 ### FEAT-11 Overlay never takes keyboard focus
 
-Checked in TASK-07. The window's extended style is `0x40118` (`TOPMOST`, `APPWINDOW`), with no `WS_EX_NOACTIVATE`, and `tauri.conf.json` leaves `focus` at its default of on. When it was launched from a background shell, it didn't take focus from the app in front, but Windows' foreground lock may be what stopped it there. In TASK-08 the user confirmed that clicking the overlay takes keyboard focus from the field they were typing in. Still to check: whether it also takes focus when the user launches it.
+Checked in TASK-07. The window's extended style is `0x40118` (`TOPMOST`, `APPWINDOW`), with no `WS_EX_NOACTIVATE`, and `tauri.conf.json` leaves `focus` at its default of on. When it was launched from a background shell, it didn't take focus from the app in front, but Windows' foreground lock may be what stopped it there. In TASK-08 the user confirmed that clicking the overlay takes keyboard focus from the field they were typing in.
+
+Fixed with two window options in `tauri.conf.json`, so no platform code was needed. `"focusable": false` makes tao add `WS_EX_NOACTIVATE` on Windows (the style became `0x8040118`) and show the window without activating it, and `"focus": false` stops it asking for focus when it's created. The foreground app stayed in front through launch. The user then typed in another app while clicking, dragging and resizing the overlay and pressing its toolbar buttons, and the keystrokes never left that app. The toolbar works by mouse only now, which suits an overlay.
 
 To read the overlay's styles from outside, find the window with class `Tauri Window`. During startup, `Process.MainWindowHandle` can return tao's `Tao Thread Event Target` instead, which is visible, 18×18 and click-through by design.
 
